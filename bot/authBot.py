@@ -22,6 +22,17 @@ class AuthBot:
             self.bot.reply_to(message, welcome_text)
 
         @self.bot.message_handler(commands=['login'])
+        def handle_login(message):
+            # Extract username and password from the message text
+            try:
+                username, password = message.text.split()[1:3]
+                if self.db.validasi_pengguna(username, password):
+                    self.kirim_link_setelah_login(message.chat.id)
+                    self.bot.reply_to(message, "Login berhasil!")
+                else:
+                    self.bot.reply_to(message, "Username atau password salah.")
+            except ValueError:
+                self.bot.reply_to(message, "Format salah. Gunakan: /login <username> <password>")
         def send_login_link(message):
             login_text = (
                 "Login melalui web: "

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Login Sistem</title>
+    <title>Admin Login</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         body {
@@ -41,34 +41,29 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Login Sistem</h2>
-        <form id="loginForm">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+        <h2>Admin Login</h2>
+        <form id="adminLoginForm">
+            <input type="text" name="username" placeholder="Username Admin" required>
+            <input type="password" name="password" placeholder="Password Admin" required>
             <button type="submit">Login</button>
         </form>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(e.target);
             
-            axios.post('/login', formData)
+            axios.post('/admin/login', formData)
                 .then(response => {
                     if (response.data.berhasil) {
-                        alert('Login Berhasil!');
-                        if (response.data.is_admin) {
-                            window.location.href = '/admin/dashboard';
-                        } else {
-                            window.location.href = response.data.redirect;
-                        }
+                        window.location.href = response.data.redirect;
                     } else {
-                        alert('Login Gagal: ' + response.data.pesan);
+                        alert(response.data.pesan);
                     }
                 })
                 .catch(error => {
-                    alert('Terjadi kesalahan');
+                    alert('Terjadi kesalahan pada sistem');
                 });
         });
     </script>

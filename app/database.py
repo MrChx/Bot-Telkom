@@ -43,26 +43,34 @@ class UserDatabase:
 
     def perbarui_pengguna(self, user_id, update_data):
         try:
+            # Hash password if provided
             if 'password' in update_data:
                 update_data['password'] = generate_password_hash(update_data['password'])
             
+            # Update user details
             self.users_collection.update_one(
-                {'_id': ObjectId(user_id), 'aktif': True}, 
+                {'_id': ObjectId(user_id)}, 
                 {'$set': update_data}
             )
             return True
-        except:
+        except Exception as e:
+            print(f"Error updating user: {e}")
             return False
 
-    def hapus_pengguna(self, user_id):
+    def hapus_pengguna(self, user_id, permanent=False):
         try:
-            # Soft delete
-            self.users_collection.update_one(
-                {'_id': ObjectId(user_id)}, 
-                {'$set': {'aktif': False}}
-            )
+            if permanent:
+                # Hard delete: completely remove user from database
+                self.users_collection.delete_one({'_id': ObjectId(user_id)})
+            else:
+                # Soft delete: mark user as inactive
+                self.users_collection.update_one(
+                    {'_id': ObjectId(user_id)}, 
+                    {'$set': {'aktif': False}}
+                )
             return True
-        except:
+        except Exception as e:
+            print(f"Error deleting user: {e}")
             return False
 
     def dapatkan_statistik_pengguna(self):

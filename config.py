@@ -15,4 +15,6 @@ class Config:
     HELPER_BOT_LINK = os.getenv('HELPER_BOT_LINK')
     WEB_LOGIN_URL = os.getenv('WEB_LOGIN_URL')
     SECRET_KEY = os.getenv('SECRET_KEY')
+    ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')
+    ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
     DEBUG = os.getenv('FLASK_DEBUG', 'False') == 'True'

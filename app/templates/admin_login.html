@@ -2,45 +2,81 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background-color: #f0f2f5;
+            padding: 15px;
         }
         .login-container {
             background-color: white;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .halo-admin {
+            background-color:rgb(235, 42, 28);
+            color: white;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 20px;
+            font-weight: bold;
         }
         input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 16px;
         }
         button {
             width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
+            padding: 12px;
+            background-color:rgb(235, 43, 18);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color:rgb(226, 35, 28);
+        }
+        @media screen and (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+            }
+            .halo-admin {
+                margin: -20px -20px 15px;
+            }
+            input, button {
+                padding: 10px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
+        <div class="halo-admin">Halo Admin</div>
         <h2>Admin Login</h2>
         <form id="adminLoginForm">
             <input type="text" name="username" placeholder="Username Admin" required>

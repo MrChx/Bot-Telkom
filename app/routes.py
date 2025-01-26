@@ -94,6 +94,12 @@ def tambah_pengguna():
 @admin_required
 def perbarui_pengguna(user_id):
     data = request.form.to_dict()
+    
+    # Remove password from update if it's empty
+    if not data.get('password'):
+        data.pop('password', None)
+    
+    # Convert is_admin to boolean
     data['is_admin'] = data.get('is_admin') == 'on'
     
     berhasil = db.perbarui_pengguna(user_id, data)
@@ -106,7 +112,7 @@ def perbarui_pengguna(user_id):
 @app.route('/admin/hapus_pengguna/<user_id>', methods=['POST'])
 @admin_required
 def hapus_pengguna(user_id):
-    berhasil = db.hapus_pengguna(user_id)
+    berhasil = db.hapus_pengguna(user_id, permanent=True)
     
     return jsonify({
         'berhasil': berhasil,

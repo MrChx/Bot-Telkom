@@ -1,121 +1,381 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --text-color: #333;
+        --background-color: #f4f7f6;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: var(--background-color);
+        line-height: 1.6;
+        color: var(--text-color);
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+      }
+
+      h1 {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .section h2 {
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+      }
+
+      #formTambahPengguna {
+        display: grid;
+        gap: 15px;
+      }
+
+      #formTambahPengguna input,
+      #formTambahPengguna button {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      #formTambahPengguna button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #formTambahPengguna button:hover {
+        background-color: #2980b9;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      table th {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .action-buttons button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+      }
+
+      .action-buttons button:first-child {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
+      .action-buttons button:last-child {
+        background-color: #e74c3c;
+        color: white;
+      }
+
+      .action-buttons button:hover {
+        opacity: 0.8;
+      }
+
+      .logout {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      @media screen and (max-width: 600px) {
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          width: 95%;
+          padding: 15px;
         }
+
         table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+          font-size: 14px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
+
         .action-buttons {
-            display: flex;
-            gap: 10px;
+          flex-direction: column;
         }
+
+        .action-buttons button {
+          width: 100%;
+        }
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 30px;
+        border: 1px solid #888;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 12px;
+      }
+      .close-modal {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .modal-content h2 {
+        margin-bottom: 20px;
+        color: var(--primary-color);
+      }
+      .modal-content input,
+      .modal-content button {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 15px;
+      }
+      .modal-content button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .modal-content button:hover {
+        background-color: #2980b9;
+      }
+      @media (max-width: 767px) {
+        .modal-content {
+          margin: 20% auto;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Panel Admin</h1>
-        
-        <div>
-            <h2>Statistik Pengguna</h2>
-            <p>Total Pengguna: <span id="totalUsers">{{ statistik.total_pengguna }}</span></p>
-            <p>Total Admin: <span id="totalAdmins">{{ statistik.total_admin }}</span></p>
-        </div>
+      <h1>Panel Admin</h1>
 
-        <div>
-            <h2>Tambah Pengguna Baru</h2>
-            <form id="formTambahPengguna">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <label>
-                    <input type="checkbox" name="is_admin"> Admin
-                </label>
-                <button type="submit">Tambah Pengguna</button>
-            </form>
-        </div>
+      <div class="section">
+        <h2>Statistik Pengguna</h2>
+        <p>
+          Total Pengguna:
+          <span id="totalUsers">{{ statistik.total_pengguna }}</span>
+        </p>
+        <p>
+          Total Admin: <span id="totalAdmins">{{ statistik.total_admin }}</span>
+        </p>
+      </div>
 
-        <div>
-            <h2>Daftar Pengguna</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Status Admin</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="userList">
-                    {% for user in users %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ 'Admin' if user.is_admin else 'Pengguna' }}</td>
-                        <td class="action-buttons">
-                            <button onclick="editUser('{{ user._id }}')">Edit</button>
-                            <button onclick="hapusUser('{{ user._id }}')">Hapus</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+      <div class="section">
+        <h2>Tambah Pengguna Baru</h2>
+        <form id="formTambahPengguna">
+          <input type="text" name="username" placeholder="Username" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <div>
+            <input type="checkbox" name="is_admin" id="adminCheckbox" />
+            <label for="adminCheckbox">Admin</label>
+          </div>
+          <button type="submit">Tambah Pengguna</button>
+        </form>
+      </div>
 
-        <a href="/logout">Logout</a>
+      <div class="section">
+        <h2>Daftar Pengguna</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Status Admin</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="userList">
+            {% for user in users %}
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ 'Admin' if user.is_admin else 'Pengguna' }}</td>
+              <td class="action-buttons">
+                <button onclick="editUser('{{ user._id }}')">Edit</button>
+                <button onclick="hapusUser('{{ user._id }}')">Hapus</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="editUserModal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h2>Edit Pengguna</h2>
+          <form id="formEditPengguna">
+            <input type="hidden" id="editUserId" name="user_id" />
+            <input
+              type="text"
+              id="editUsername"
+              name="username"
+              placeholder="Username"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password (kosongkan jika tidak ingin mengubah)"
+            />
+            <div>
+              <input type="checkbox" name="is_admin" id="editAdminCheckbox" />
+              <label for="editAdminCheckbox">Admin</label>
+            </div>
+            <button type="submit">Perbarui Pengguna</button>
+          </form>
+        </div>
+      </div>
+
+      <a href="/logout" class="logout">Logout</a>
     </div>
 
     <script>
-        function editUser(userId) {
-            alert('Fitur edit sedang dikembangkan');
-        }
+      function editUser(userId) {
+        const modal = document.getElementById("editUserModal");
+        const closeBtn = document.querySelector(".close-modal");
+        const form = document.getElementById("formEditPengguna");
 
-        function hapusUser(userId) {
-            if(confirm('Yakin ingin menghapus pengguna?')) {
-                axios.post(`/admin/hapus_pengguna/${userId}`)
-                    .then(response => {
-                        if (response.data.berhasil) {
-                            alert('Pengguna berhasil dihapus');
-                            location.reload();
-                        } else {
-                            alert('Gagal menghapus pengguna');
-                        }
-                    });
+        const userRow = document
+          .querySelector(`tr button[onclick="editUser('${userId}')"]`)
+          .closest("tr");
+        const username = userRow.querySelector("td:first-child").textContent;
+        const isAdmin =
+          userRow.querySelector("td:nth-child(2)").textContent === "Admin";
+
+        document.getElementById("editUserId").value = userId;
+        document.getElementById("editUsername").value = username;
+        document.getElementById("editAdminCheckbox").checked = isAdmin;
+
+        modal.style.display = "block";
+
+        closeBtn.onclick = () => (modal.style.display = "none");
+
+        window.onclick = (event) => {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      }
+
+      document
+        .getElementById("formEditPengguna")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const userId = formData.get("user_id");
+
+          axios
+            .post(`/admin/perbarui_pengguna/${userId}`, formData)
+            .then((response) => {
+              if (response.data.berhasil) {
+                alert("Pengguna berhasil diperbarui");
+                location.reload();
+              } else {
+                alert(response.data.pesan);
+              }
+            })
+            .catch((error) => {
+              alert("Terjadi kesalahan: " + error.message);
+            });
+        });
+
+      function hapusUser(userId) {
+        if (confirm("Yakin ingin menghapus pengguna secara permanen?")) {
+          axios.post(`/admin/hapus_pengguna/${userId}`).then((response) => {
+            if (response.data.berhasil) {
+              alert("Pengguna berhasil dihapus");
+              location.reload();
+            } else {
+              alert(response.data.pesan);
             }
+          });
         }
+      }
 
-        document.getElementById('formTambahPengguna').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            axios.post('/admin/tambah_pengguna', formData)
-                .then(response => {
-                    if (response.data.berhasil) {
-                        alert('Pengguna berhasil ditambahkan');
-                        location.reload();
-                    } else {
-                        alert(response.data.pesan);
-                    }
-                });
+      document
+        .getElementById("formTambahPengguna")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+
+          axios.post("/admin/tambah_pengguna", formData).then((response) => {
+            if (response.data.berhasil) {
+              alert("Pengguna berhasil ditambahkan");
+              location.reload();
+            } else {
+              alert(response.data.pesan);
+            }
+          });
         });
     </script>
-</body>
+  </body>
 </html>

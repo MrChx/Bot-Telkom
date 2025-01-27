@@ -16,14 +16,13 @@ class AuthBot:
         def send_welcome(message):
             welcome_text = (
                 "Selamat datang! 🤖\n\n"
-                f"Silakan login di: {os.getenv('WEB_LOGIN_URL')}\n"
+                f"Silakan login di: {os.getenv('WEB_LOGIN_URL')}?telegram_id={message.from_user.id}\n"
                 "Setelah login, Anda akan mendapatkan link grup asisten dan bot helper."
             )
             self.bot.reply_to(message, welcome_text)
 
         @self.bot.message_handler(commands=['login'])
         def handle_login(message):
-            # Extract username and password from the message text
             try:
                 username, password = message.text.split()[1:3]
                 if self.db.validasi_pengguna(username, password):
@@ -33,6 +32,7 @@ class AuthBot:
                     self.bot.reply_to(message, "Username atau password salah.")
             except ValueError:
                 self.bot.reply_to(message, "Format salah. Gunakan: /login <username> <password>")
+                
         def send_login_link(message):
             login_text = (
                 "Login melalui web: "
@@ -42,13 +42,11 @@ class AuthBot:
             self.bot.reply_to(message, login_text)
 
     def kirim_link_setelah_login(self, user_id):
-        # Kirim link ke grup asisten
         self.bot.send_message(
             user_id, 
             f"Bergabung ke grup asisten: {self.assistant_group_link}"
         )
-        
-        # Kirim link bot helper
+
         self.bot.send_message(
             user_id, 
             f"Mulai chat dengan bot helper: {self.helper_bot_link}"

@@ -8,7 +8,6 @@ class AssistantBot:
     def __init__(self):
         self.bot = telebot.TeleBot(os.getenv('ASSISTANT_BOT_TOKEN'))
         
-        # Tutorial dari environment variables
         self.tutorials = {
             'tutorial_1': {
                 'text': os.getenv('TUTORIAL_1_TEXT'),
@@ -26,11 +25,9 @@ class AssistantBot:
             if command in self.tutorials:
                 tutorial = self.tutorials[command]
                 
-                # Kirim teks tutorial
                 if tutorial['text']:
                     self.bot.reply_to(message, tutorial['text'])
                 
-                # Kirim gambar tutorial
                 if tutorial['image_file_id']:
                     self.bot.send_photo(message.chat.id, tutorial['image_file_id'])
 

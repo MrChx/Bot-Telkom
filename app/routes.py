@@ -18,18 +18,14 @@ def halaman_utama():
 def login():
     username = request.form['username']
     password = request.form['password']
+    telegram_id = request.form.get('telegram_id')
     
     if db.validasi_pengguna(username, password):
-        from bot.authBot import AuthBot  # Import di sini untuk menghindari circular import
-        
         session['username'] = username
         session['is_admin'] = db.cek_admin(username)
         
-        # Kirim link ke bot auth 
-        user = db.dapatkan_pengguna_berdasarkan_username(username)
-        if user and 'telegram_user_id' in user:
-            auth_bot = AuthBot()
-            auth_bot.kirim_link_setelah_login(user['telegram_user_id'])
+        if telegram_id:
+            db.update_login_status(username, telegram_id)
         
         return jsonify({
             'berhasil': True, 
@@ -58,7 +54,6 @@ def admin_login():
         username = request.form['username']
         password = request.form['password']
         
-        # Check against environment variables for admin credentials
         if (username == os.getenv('ADMIN_USERNAME') and 
             password == os.getenv('ADMIN_PASSWORD')):
             session['is_admin'] = True
@@ -95,11 +90,9 @@ def tambah_pengguna():
 def perbarui_pengguna(user_id):
     data = request.form.to_dict()
     
-    # Remove password from update if it's empty
     if not data.get('password'):
         data.pop('password', None)
     
-    # Convert is_admin to boolean
     data['is_admin'] = data.get('is_admin') == 'on'
     
     berhasil = db.perbarui_pengguna(user_id, data)

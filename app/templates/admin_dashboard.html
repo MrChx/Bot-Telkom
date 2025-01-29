@@ -7,10 +7,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
       :root {
-        --primary-color: #3498db;
+        --primary-color: #6366f1;
         --secondary-color: #2ecc71;
+        --background-color: #f1f5f9;
         --text-color: #333;
-        --background-color: #f4f7f6;
       }
 
       * {
@@ -24,125 +24,264 @@
         background-color: var(--background-color);
         line-height: 1.6;
         color: var(--text-color);
+        display: flex;
       }
 
-      .container {
-        width: 90%;
-        max-width: 1200px;
-        margin: 20px auto;
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-      }
-
-      h1 {
-        text-align: center;
-        color: var(--primary-color);
-        margin-bottom: 20px;
-      }
-
-      .section {
-        margin-bottom: 30px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
+      /* Sidebar Styles */
+      .sidebar {
+        width: 250px;
+        background-color: #1e293b;
+        min-height: 100vh;
         padding: 20px;
+        color: white;
+        position: fixed;
+        transition: width 0.3s ease;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 30px;
+        font-size: 24px;
+        color: white;
+        text-decoration: none;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 5px;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        background-color: #2d3748;
+        color: white;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 250px;
+        padding: 20px;
+        width: calc(100% - 250px);
+        transition: margin-left 0.3s ease, width 0.3s ease;
+      }
+
+      /* Search Box */
+      .search-box {
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stats-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .stats-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(99, 102, 241, 0.1);
+        color: var(--primary-color);
+      }
+
+      .stats-info h3 {
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
+
+      .stats-info p {
+        color: #666;
+        font-size: 14px;
+      }
+
+      /* Table Section */
+      .section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow-x: auto;
       }
 
       .section h2 {
-        border-bottom: 2px solid var(--primary-color);
-        padding-bottom: 10px;
-        margin-bottom: 15px;
         color: var(--primary-color);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--primary-color);
       }
 
-      #formTambahPengguna {
+      /* Form Styles */
+      form {
         display: grid;
         gap: 15px;
       }
 
-      #formTambahPengguna input,
-      #formTambahPengguna button {
+      input[type="text"],
+      input[type="password"] {
         width: 100%;
         padding: 10px;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 6px;
+        font-size: 14px;
       }
 
-      #formTambahPengguna button {
+      button {
         background-color: var(--primary-color);
         color: white;
         border: none;
+        padding: 10px;
+        border-radius: 6px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        font-size: 14px;
+        transition: background-color 0.3s;
       }
 
-      #formTambahPengguna button:hover {
-        background-color: #2980b9;
+      button:hover {
+        opacity: 0.9;
       }
 
+      /* Table Styles */
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
       }
 
-      table th,
-      table td {
-        border: 1px solid #ddd;
+      th,
+      td {
         padding: 12px;
         text-align: left;
+        border-bottom: 1px solid #ddd;
       }
 
-      table th {
-        background-color: var(--primary-color);
-        color: white;
+      th {
+        background-color: #f8fafc;
+        font-weight: 600;
       }
 
       .action-buttons {
         display: flex;
-        gap: 10px;
+        gap: 8px;
       }
 
       .action-buttons button {
-        padding: 8px 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: opacity 0.3s ease;
+        padding: 6px 12px;
+        font-size: 12px;
       }
 
-      .action-buttons button:first-child {
-        background-color: var(--secondary-color);
-        color: white;
+      /* Modal Styles */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
       }
 
-      .action-buttons button:last-child {
-        background-color: #e74c3c;
-        color: white;
-      }
-
-      .action-buttons button:hover {
-        opacity: 0.8;
-      }
-
-      .logout {
-        display: block;
+      .modal {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
         text-align: center;
-        margin-top: 20px;
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: bold;
       }
 
-      @media screen and (max-width: 600px) {
-        .container {
-          width: 95%;
+      .modal-icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 15px;
+        border: 2px solid;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-icon.success {
+        border-color: #28a745;
+        color: #28a745;
+      }
+
+      .modal-icon.error {
+        border-color: #dc3545;
+        color: #dc3545;
+      }
+
+      .modal-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .modal-message {
+        color: #666;
+        margin-bottom: 15px;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 70px;
+        }
+
+        .logo span,
+        .nav-item span {
+          display: none;
+        }
+
+        .main-content {
+          margin-left: 70px;
+          width: calc(100% - 70px);
           padding: 15px;
         }
 
-        table {
-          font-size: 14px;
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          padding: 15px;
+        }
+
+        .stats-card {
+          padding: 15px;
         }
 
         .action-buttons {
@@ -153,78 +292,45 @@
           width: 100%;
         }
       }
-
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-      }
-      .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 30px;
-        border: 1px solid #888;
-        width: 90%;
-        max-width: 600px;
-        border-radius: 12px;
-      }
-      .close-modal {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      .modal-content h2 {
-        margin-bottom: 20px;
-        color: var(--primary-color);
-      }
-      .modal-content input,
-      .modal-content button {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        margin-bottom: 15px;
-      }
-      .modal-content button {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      .modal-content button:hover {
-        background-color: #2980b9;
-      }
-      @media (max-width: 767px) {
-        .modal-content {
-          margin: 20% auto;
-        }
-      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Panel Admin</h1>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="#" class="logo">
+        <span>Dynamic</span>
+      </a>
+      <nav>
+        <a href="#" class="nav-item active">
+          <span>Dashboard</span>
+        </a>
+        <a href="/logout" class="nav-item">
+          <span>Logout</span>
+        </a>
+      </nav>
+    </div>
 
-      <div class="section">
-        <h2>Statistik Pengguna</h2>
-        <p>
-          Total Pengguna:
-          <span id="totalUsers">{{ statistik.total_pengguna }}</span>
-        </p>
-        <p>
-          Total Admin: <span id="totalAdmins">{{ statistik.total_admin }}</span>
-        </p>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stats-card">
+          <div class="stats-icon">👥</div>
+          <div class="stats-info">
+            <h3>{{ statistik.total_pengguna }}</h3>
+            <p>Total Pengguna</p>
+          </div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-icon">👑</div>
+          <div class="stats-info">
+            <h3>{{ statistik.total_admin }}</h3>
+            <p>Total Admin</p>
+          </div>
+        </div>
       </div>
 
+      <!-- Add User Section -->
       <div class="section">
         <h2>Tambah Pengguna Baru</h2>
         <form id="formTambahPengguna">
@@ -243,8 +349,12 @@
         </form>
       </div>
 
+      <!-- User List Section -->
       <div class="section">
         <h2>Daftar Pengguna</h2>
+        <div class="search-box">
+          <input type="text" id="searchUser" placeholder="Cari pengguna..." />
+        </div>
         <table>
           <thead>
             <tr>
@@ -267,43 +377,68 @@
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div id="editUserModal" class="modal">
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <h2>Edit Pengguna</h2>
-          <form id="formEditPengguna">
-            <input type="hidden" id="editUserId" name="user_id" />
-            <input
-              type="text"
-              id="editUsername"
-              name="username"
-              placeholder="Username"
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password (kosongkan jika tidak ingin mengubah)"
-            />
-            <div>
-              <input type="checkbox" name="is_admin" id="editAdminCheckbox" />
-              <label for="editAdminCheckbox">Admin</label>
-            </div>
-            <button type="submit">Perbarui Pengguna</button>
-          </form>
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-icon" id="modalIcon">
+          <span id="modalIconSymbol">✓</span>
         </div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-message" id="modalMessage"></div>
+        <button onclick="closeModal()">OK</button>
       </div>
+    </div>
 
-      <a href="/logout" class="logout">Logout</a>
+    <!-- Edit User Modal -->
+    <div class="modal-overlay" id="editModal">
+      <div class="modal">
+        <h2>Edit Pengguna</h2>
+        <form id="formEditPengguna">
+          <input type="hidden" id="editUserId" name="user_id" />
+          <input
+            type="text"
+            id="editUsername"
+            name="username"
+            placeholder="Username"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password (kosongkan jika tidak ingin mengubah)"
+          />
+          <div>
+            <input type="checkbox" name="is_admin" id="editAdminCheckbox" />
+            <label for="editAdminCheckbox">Admin</label>
+          </div>
+          <button type="submit">Perbarui Pengguna</button>
+        </form>
+      </div>
     </div>
 
     <script>
-      function editUser(userId) {
-        const modal = document.getElementById("editUserModal");
-        const closeBtn = document.querySelector(".close-modal");
-        const form = document.getElementById("formEditPengguna");
+      function showModal(type, title, message) {
+        const modalOverlay = document.getElementById("modalOverlay");
+        const modalIcon = document.getElementById("modalIcon");
+        const modalIconSymbol = document.getElementById("modalIconSymbol");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalMessage = document.getElementById("modalMessage");
 
+        modalIcon.className = "modal-icon " + type;
+        modalIconSymbol.textContent = type === "success" ? "✓" : "✕";
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modalOverlay.style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("modalOverlay").style.display = "none";
+        document.getElementById("editModal").style.display = "none";
+      }
+
+      function editUser(userId) {
         const userRow = document
           .querySelector(`tr button[onclick="editUser('${userId}')"]`)
           .closest("tr");
@@ -314,17 +449,60 @@
         document.getElementById("editUserId").value = userId;
         document.getElementById("editUsername").value = username;
         document.getElementById("editAdminCheckbox").checked = isAdmin;
-
-        modal.style.display = "block";
-
-        closeBtn.onclick = () => (modal.style.display = "none");
-
-        window.onclick = (event) => {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        };
+        document.getElementById("editModal").style.display = "flex";
       }
+
+      function hapusUser(userId) {
+        if (confirm("Yakin ingin menghapus pengguna secara permanen?")) {
+          axios.post(`/admin/hapus_pengguna/${userId}`).then((response) => {
+            if (response.data.berhasil) {
+              showModal("success", "Berhasil", "Pengguna berhasil dihapus");
+              setTimeout(() => {
+                location.reload();
+              }, 1500);
+            } else {
+              showModal("error", "Error", response.data.pesan);
+            }
+          });
+        }
+      }
+
+      // Search functionality
+      document
+        .getElementById("searchUser")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const rows = document.querySelectorAll("#userList tr");
+
+          rows.forEach((row) => {
+            const username = row
+              .querySelector("td:first-child")
+              .textContent.toLowerCase();
+            if (username.includes(searchTerm)) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+        });
+
+      document
+        .getElementById("formTambahPengguna")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+
+          axios.post("/admin/tambah_pengguna", formData).then((response) => {
+            if (response.data.berhasil) {
+              showModal("success", "Berhasil", "Pengguna berhasil ditambahkan");
+              setTimeout(() => {
+                location.reload();
+              }, 1500);
+            } else {
+              showModal("error", "Error", response.data.pesan);
+            }
+          });
+        });
 
       document
         .getElementById("formEditPengguna")
@@ -337,44 +515,18 @@
             .post(`/admin/perbarui_pengguna/${userId}`, formData)
             .then((response) => {
               if (response.data.berhasil) {
-                alert("Pengguna berhasil diperbarui");
-                location.reload();
+                showModal(
+                  "success",
+                  "Berhasil",
+                  "Pengguna berhasil diperbarui"
+                );
+                setTimeout(() => {
+                  location.reload();
+                }, 1500);
               } else {
-                alert(response.data.pesan);
+                showModal("error", "Error", response.data.pesan);
               }
-            })
-            .catch((error) => {
-              alert("Terjadi kesalahan: " + error.message);
             });
-        });
-
-      function hapusUser(userId) {
-        if (confirm("Yakin ingin menghapus pengguna secara permanen?")) {
-          axios.post(`/admin/hapus_pengguna/${userId}`).then((response) => {
-            if (response.data.berhasil) {
-              alert("Pengguna berhasil dihapus");
-              location.reload();
-            } else {
-              alert(response.data.pesan);
-            }
-          });
-        }
-      }
-
-      document
-        .getElementById("formTambahPengguna")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const formData = new FormData(e.target);
-
-          axios.post("/admin/tambah_pengguna", formData).then((response) => {
-            if (response.data.berhasil) {
-              alert("Pengguna berhasil ditambahkan");
-              location.reload();
-            } else {
-              alert(response.data.pesan);
-            }
-          });
         });
     </script>
   </body>

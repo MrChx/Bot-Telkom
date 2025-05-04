@@ -16,7 +16,7 @@ class AuthBot:
         def send_welcome(message):
             welcome_text = (
                 "Selamat datang! 🤖\n\n"
-                f"Silakan login di: {os.getenv('WEB_LOGIN_URL')}?telegram_id={message.from_user.id}\n"
+                f"Silakan login di: {os.getenv('WEB_LOGIN_URL')}?telegram_id={message.from_user.id}\n\n"
                 "Setelah login, Anda akan mendapatkan link grup asisten dan bot helper."
             )
             self.bot.reply_to(message, welcome_text)

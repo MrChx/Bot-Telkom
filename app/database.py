@@ -55,7 +55,7 @@ class UserDatabase:
             {
                 '$set': {
                     'login_timestamp': datetime.utcnow(),
-                    'telegram_id': int(telegram_id)  #Ubah ke int
+                    'telegram_id': int(telegram_id)
                 }
             }
         )
@@ -63,7 +63,7 @@ class UserDatabase:
         
     def is_login_valid(self, telegram_id):
         from datetime import datetime
-        user = self.users_collection.find_one({'telegram_id': int(telegram_id)})  #Pastikan membaca sebagai int
+        user = self.users_collection.find_one({'telegram_id': int(telegram_id)})
         
         if not user or not user.get('login_timestamp'):
             print(f"[DEBUG] User dengan telegram_id {telegram_id} tidak ditemukan atau belum login.")

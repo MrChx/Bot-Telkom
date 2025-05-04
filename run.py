@@ -2,6 +2,7 @@ import threading
 import signal
 import sys
 import time
+import os
 from bot.authBot import AuthBot
 from bot.asistenBot import AssistantBot
 from bot.helperBot import HelperBot
@@ -36,7 +37,8 @@ def jalankan_bot_helper():
 
 def jalankan_web():
     try:
-        app.run(host='0.0.0.0', port=5002, debug=False, use_reloader=False)
+        port = int(os.getenv('PORT', 5002))
+        app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
     except Exception as e:
         print(f"Error web server: {e}")
 

@@ -1,1 +1,33 @@
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches
+*.pyc
+*.pyo
+
+# Environment files
 .env
+
+# Virtual environments
+venv/
+env/
+
+# VSCode settings
+.vscode/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+static/uploads/

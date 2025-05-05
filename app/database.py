@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import Config
 import sys
+from datetime import datetime
 
 class UserDatabase:
     def __init__(self):
@@ -21,6 +22,7 @@ class UserDatabase:
             
             self.db = self.client[Config.MONGODB_DATABASE]
             self.users_collection = self.db['users']
+            self.tutorials_collection = self.db['tutorials']
             
         except Exception as e:
             print(f"Error koneksi MongoDB: {str(e)}", file=sys.stderr)
@@ -30,6 +32,7 @@ class UserDatabase:
             print("3. IP Address sudah di-whitelist di MongoDB Atlas")
             raise
 
+    # User Managemen
     def tambah_pengguna(self, username, password, is_admin=False):
         if self.users_collection.find_one({'username': username}):
             return False
@@ -49,7 +52,6 @@ class UserDatabase:
         return True
     
     def update_login_status(self, username, telegram_id):
-        from datetime import datetime
         return self.users_collection.update_one(
             {'username': username},
             {
@@ -59,10 +61,8 @@ class UserDatabase:
                 }
             }
         )
-
         
     def is_login_valid(self, telegram_id):
-        from datetime import datetime
         user = self.users_collection.find_one({'telegram_id': int(telegram_id)})
         
         if not user or not user.get('login_timestamp'):
@@ -73,7 +73,6 @@ class UserDatabase:
         print(f"[DEBUG] Selisih waktu login: {time_diff.total_seconds()} detik")
         
         return time_diff.total_seconds() < 24 * 3600
-
 
     def validasi_pengguna(self, username, password):
         user = self.users_collection.find_one({'username': username, 'aktif': True})
@@ -93,11 +92,9 @@ class UserDatabase:
 
     def perbarui_pengguna(self, user_id, update_data):
         try:
-            # Hash password if provided
-            if 'password' in update_data:
+            if 'password' in update_data and update_data['password']:
                 update_data['password'] = generate_password_hash(update_data['password'])
             
-            # Update user details
             self.users_collection.update_one(
                 {'_id': ObjectId(user_id)}, 
                 {'$set': update_data}
@@ -126,9 +123,61 @@ class UserDatabase:
     def dapatkan_statistik_pengguna(self):
         return {
             'total_pengguna': self.users_collection.count_documents({'aktif': True}),
-            'total_admin': self.users_collection.count_documents({'is_admin': True, 'aktif': True})
+            'total_admin': self.users_collection.count_documents({'is_admin': True, 'aktif': True}),
+            'total_tutorial': self.tutorials_collection.count_documents({})
         }
 
     def cek_admin(self, username):
         user = self.users_collection.find_one({'username': username, 'is_admin': True, 'aktif': True})
         return user is not None
+        
+    # Tutorial Management
+    def tambah_tutorial(self, title, text_content, image_file_id):
+        tutorial_data = {
+            'title': title,
+            'text_content': text_content,
+            'image_file_id': image_file_id,
+            'created_at': datetime.utcnow(),
+            'updated_at': datetime.utcnow(),
+            'command': f"tutorial_{title.lower().replace(' ', '_')}"
+        }
+        
+        result = self.tutorials_collection.insert_one(tutorial_data)
+        return str(result.inserted_id)
+    
+    def perbarui_tutorial(self, tutorial_id, update_data):
+        try:
+            update_data['updated_at'] = datetime.utcnow()
+            
+            # Update command if title is changed
+            if 'title' in update_data:
+                update_data['command'] = f"tutorial_{update_data['title'].lower().replace(' ', '_')}"
+            
+            self.tutorials_collection.update_one(
+                {'_id': ObjectId(tutorial_id)}, 
+                {'$set': update_data}
+            )
+            return True
+        except Exception as e:
+            print(f"Error updating tutorial: {e}")
+            return False
+    
+    def hapus_tutorial(self, tutorial_id):
+        try:
+            self.tutorials_collection.delete_one({'_id': ObjectId(tutorial_id)})
+            return True
+        except Exception as e:
+            print(f"Error deleting tutorial: {e}")
+            return False
+    
+    def dapatkan_semua_tutorial(self):
+        return list(self.tutorials_collection.find().sort('created_at', -1))
+    
+    def dapatkan_tutorial_berdasarkan_id(self, tutorial_id):
+        try:
+            return self.tutorials_collection.find_one({'_id': ObjectId(tutorial_id)})
+        except:
+            return None
+    
+    def dapatkan_tutorial_berdasarkan_command(self, command):
+        return self.tutorials_collection.find_one({'command': command})

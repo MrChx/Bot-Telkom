@@ -1,11 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-# Muat variabel environment
 load_dotenv()
 
 class Config:
-    # Ambil variabel dari .env dengan aman
     MONGODB_URI = os.getenv('MONGODB_URI')
     MONGODB_DATABASE = os.getenv('MONGODB_DATABASE')
     AUTH_BOT_TOKEN = os.getenv('AUTH_BOT_TOKEN')

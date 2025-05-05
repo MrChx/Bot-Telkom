@@ -1,19 +1,31 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory
 from functools import wraps
 from app.database import UserDatabase
 from config import Config
 import os
+import uuid
+import datetime
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.secret_key = app.config['SECRET_KEY']
 
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 db = UserDatabase()
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def halaman_utama():
     return render_template('login.html')
 
+# user
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
@@ -110,4 +122,88 @@ def hapus_pengguna(user_id):
     return jsonify({
         'berhasil': berhasil,
         'pesan': 'Pengguna berhasil dihapus' if berhasil else 'Gagal menghapus'
+    })
+
+# tutorial
+@app.route('/admin/tutorials')
+@admin_required
+def admin_tutorials():
+    tutorials = db.dapatkan_semua_tutorial()
+    return render_template('admin_tutorials.html', tutorials=tutorials)
+
+@app.route('/admin/tambah_tutorial', methods=['POST'])
+@admin_required
+def tambah_tutorial():
+    title = request.form['title']
+    text_content = request.form['text_content']
+    
+    image_path = None
+    if 'image' in request.files:
+        file = request.files['image']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            save_path = os.path.join('uploads', filename)
+            file.save(os.path.join(app.static_folder, save_path))
+            image_path = save_path
+    
+    success = db.tambah_tutorial(title, text_content, image_path)
+    return jsonify({'berhasil': success, 'pesan': 'Tutorial berhasil ditambahkan'})
+
+@app.route('/admin/perbarui_tutorial/<tutorial_id>', methods=['POST'])
+@admin_required
+def perbarui_tutorial(tutorial_id):
+    data = {
+        'title': request.form['title'],
+        'text_content': request.form['text_content']
+    }
+    
+    if request.form.get('image_file_id'):
+        data['image_file_id'] = request.form['image_file_id']
+    
+    berhasil = db.perbarui_tutorial(tutorial_id, data)
+    
+    return jsonify({
+        'berhasil': berhasil,
+        'pesan': 'Tutorial berhasil diperbarui' if berhasil else 'Gagal memperbarui tutorial'
+    })
+
+@app.route('/admin/hapus_tutorial/<tutorial_id>', methods=['POST'])
+@admin_required
+def hapus_tutorial(tutorial_id):
+    berhasil = db.hapus_tutorial(tutorial_id)
+    
+    return jsonify({
+        'berhasil': berhasil,
+        'pesan': 'Tutorial berhasil dihapus' if berhasil else 'Gagal menghapus tutorial'
+    })
+
+@app.route('/api/tutorials/<command>')
+def get_tutorial_api(command):
+    tutorial = db.dapatkan_tutorial_berdasarkan_command(command)
+    
+    if not tutorial:
+        return jsonify({'berhasil': False, 'pesan': 'Tutorial tidak ditemukan'})
+    
+    return jsonify({
+        'berhasil': True,
+        'tutorial': {
+            'title': tutorial['title'],
+            'text_content': tutorial['text_content'],
+            'image_file_id': tutorial['image_file_id']
+        }
+    })
+
+@app.route('/api/tutorials')
+def get_all_tutorials_api():
+    tutorials = db.dapatkan_semua_tutorial()
+    
+    tutorials_data = [{
+        'id': str(tutorial['_id']),
+        'title': tutorial['title'],
+        'command': tutorial['command']
+    } for tutorial in tutorials]
+    
+    return jsonify({
+        'berhasil': True,
+        'tutorials': tutorials_data
     })

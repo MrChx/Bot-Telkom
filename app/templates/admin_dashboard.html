@@ -11,6 +11,9 @@
         --secondary-color: #2ecc71;
         --background-color: #f1f5f9;
         --text-color: #333;
+        --danger-color: #ef4444;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
       }
 
       * {
@@ -36,6 +39,7 @@
         color: white;
         position: fixed;
         transition: width 0.3s ease;
+        z-index: 100;
       }
 
       .logo {
@@ -63,6 +67,12 @@
       .nav-item.active {
         background-color: #2d3748;
         color: white;
+      }
+
+      .nav-icon {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
       }
 
       /* Main Content */
@@ -127,7 +137,36 @@
         font-size: 14px;
       }
 
-      /* Table Section */
+      /* Tab Navigation */
+      .tab-nav {
+        display: flex;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 20px;
+      }
+
+      .tab-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        font-weight: 500;
+        color: #64748b;
+        margin-bottom: -2px;
+      }
+
+      .tab-item.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Section Styles */
       .section {
         background-color: white;
         padding: 20px;
@@ -142,6 +181,9 @@
         margin-bottom: 20px;
         padding-bottom: 10px;
         border-bottom: 2px solid var(--primary-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       /* Form Styles */
@@ -150,8 +192,19 @@
         gap: 15px;
       }
 
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .form-group label {
+        font-weight: 500;
+      }
+
       input[type="text"],
-      input[type="password"] {
+      input[type="password"],
+      textarea {
         width: 100%;
         padding: 10px;
         border: 1px solid #ddd;
@@ -159,19 +212,47 @@
         font-size: 14px;
       }
 
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       button {
         background-color: var(--primary-color);
         color: white;
         border: none;
-        padding: 10px;
+        padding: 10px 15px;
         border-radius: 6px;
         cursor: pointer;
         font-size: 14px;
-        transition: background-color 0.3s;
+        transition: background-color 0.3s, transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
       }
 
       button:hover {
         opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      button.danger {
+        background-color: var(--danger-color);
+      }
+
+      button.success {
+        background-color: var(--success-color);
+      }
+
+      button.warning {
+        background-color: var(--warning-color);
       }
 
       /* Table Styles */
@@ -221,41 +302,160 @@
         padding: 20px;
         border-radius: 8px;
         width: 90%;
-        max-width: 400px;
-        text-align: center;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
       }
 
-      .modal-icon {
-        width: 40px;
-        height: 40px;
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .modal-header h2 {
+        margin: 0;
+        font-size: 20px;
+        color: var(--primary-color);
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #64748b;
+        padding: 5px;
+      }
+
+      .alert-modal .modal-icon {
+        width: 60px;
+        height: 60px;
         margin: 0 auto 15px;
         border: 2px solid;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 30px;
       }
 
-      .modal-icon.success {
+      .alert-modal .modal-icon.success {
         border-color: #28a745;
         color: #28a745;
       }
 
-      .modal-icon.error {
+      .alert-modal .modal-icon.error {
         border-color: #dc3545;
         color: #dc3545;
       }
 
-      .modal-title {
+      .alert-modal .modal-title {
         font-size: 18px;
         margin-bottom: 10px;
+        text-align: center;
       }
 
-      .modal-message {
+      .alert-modal .modal-message {
         color: #666;
         margin-bottom: 15px;
+        text-align: center;
       }
 
+      .alert-modal button {
+        margin: 0 auto;
+        display: block;
+      }
+
+      /* Badge Styles */
+      .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .badge-admin {
+        background-color: rgba(99, 102, 241, 0.1);
+        color: var(--primary-color);
+      }
+
+      .badge-user {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: var(--secondary-color);
+      }
+
+      /* Preview Card for Tutorial */
+      .tutorial-preview {
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        margin-top: 15px;
+      }
+
+      .tutorial-preview h4 {
+        color: var(--primary-color);
+        margin-bottom: 8px;
+      }
+
+      .preview-content {
+        background-color: #f1f5f9;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        max-height: 120px;
+        overflow-y: auto;
+      }
+
+      .image-preview {
+        background-color: #f1f5f9;
+        padding: 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      /* Tooltip */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+      }
+
+      .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 12px;
+      }
+
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* Search Results Highlight */
+      .highlight {
+        background-color: #fef9c3;
+        padding: 2px;
+      }
+
+      /* Responsive Styles */
       @media (max-width: 768px) {
         .sidebar {
           width: 70px;
@@ -291,6 +491,11 @@
         .action-buttons button {
           width: 100%;
         }
+
+        .tab-item {
+          padding: 10px;
+          font-size: 13px;
+        }
       }
     </style>
   </head>
@@ -298,13 +503,24 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <a href="#" class="logo">
+        <span class="nav-icon">📱</span>
         <span>Dynamic</span>
       </a>
       <nav>
         <a href="#" class="nav-item active">
+          <span class="nav-icon">📊</span>
           <span>Dashboard</span>
         </a>
+        <a href="#" class="nav-item" id="navUsers">
+          <span class="nav-icon">👥</span>
+          <span>Pengguna</span>
+        </a>
+        <a href="#" class="nav-item" id="navTutorials">
+          <span class="nav-icon">📚</span>
+          <span>Tutorial</span>
+        </a>
         <a href="/logout" class="nav-item">
+          <span class="nav-icon">🚪</span>
           <span>Logout</span>
         </a>
       </nav>
@@ -328,99 +544,429 @@
             <p>Total Admin</p>
           </div>
         </div>
-      </div>
-
-      <!-- Add User Section -->
-      <div class="section">
-        <h2>Tambah Pengguna Baru</h2>
-        <form id="formTambahPengguna">
-          <input type="text" name="username" placeholder="Username" required />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
-          <div>
-            <input type="checkbox" name="is_admin" id="adminCheckbox" />
-            <label for="adminCheckbox">Admin</label>
+        <div class="stats-card">
+          <div class="stats-icon">📚</div>
+          <div class="stats-info">
+            <h3>{{ statistik.total_tutorial }}</h3>
+            <p>Total Tutorial</p>
           </div>
-          <button type="submit">Tambah Pengguna</button>
-        </form>
+        </div>
       </div>
 
-      <!-- User List Section -->
-      <div class="section">
-        <h2>Daftar Pengguna</h2>
-        <div class="search-box">
-          <input type="text" id="searchUser" placeholder="Cari pengguna..." />
+      <!-- Tab Navigation -->
+      <div class="tab-nav">
+        <div class="tab-item active" data-tab="users">Manajemen Pengguna</div>
+        <div class="tab-item" data-tab="tutorials">Manajemen Tutorial</div>
+      </div>
+
+      <!-- Users Tab Content -->
+      <div class="tab-content active" id="usersTab">
+        <!-- Add User Section -->
+        <div class="section">
+          <h2>
+            <span>Tambah Pengguna Baru</span>
+            <div class="tooltip">
+              <span>ℹ️</span>
+              <span class="tooltip-text"
+                >Tambahkan pengguna baru yang dapat mengakses tutorial via
+                Telegram bot</span
+              >
+            </div>
+          </h2>
+          <form id="formTambahPengguna">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Masukkan username"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Masukkan password"
+                required
+              />
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" name="is_admin" id="adminCheckbox" />
+              <label for="adminCheckbox">Admin</label>
+            </div>
+            <button type="submit">
+              <span>Tambah Pengguna</span>
+            </button>
+          </form>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Status Admin</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="userList">
-            {% for user in users %}
-            <tr>
-              <td>{{ user.username }}</td>
-              <td>{{ 'Admin' if user.is_admin else 'Pengguna' }}</td>
-              <td class="action-buttons">
-                <button onclick="editUser('{{ user._id }}')">Edit</button>
-                <button onclick="hapusUser('{{ user._id }}')">Hapus</button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+
+        <!-- User List Section -->
+        <div class="section">
+          <h2>
+            <span>Daftar Pengguna</span>
+            <div class="search-box">
+              <input
+                type="text"
+                id="searchUser"
+                placeholder="Cari pengguna..."
+              />
+            </div>
+          </h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Status</th>
+                <th>Terakhir Login</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="userList">
+              {% for user in users %}
+              <tr>
+                <td>{{ user.username }}</td>
+                <td>
+                  <span
+                    class="badge {% if user.is_admin %}badge-admin{% else %}badge-user{% endif %}"
+                  >
+                    {{ 'Admin' if user.is_admin else 'Pengguna' }}
+                  </span>
+                </td>
+                <td>{{ user.login_timestamp|default('Belum login', true) }}</td>
+                <td class="action-buttons">
+                  <button onclick="editUser('{{ user._id }}')">Edit</button>
+                  <button class="danger" onclick="hapusUser('{{ user._id }}')">
+                    Hapus
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tutorials Tab Content -->
+      <div class="tab-content" id="tutorialsTab">
+        <!-- Add Tutorial Section -->
+        <div class="section">
+          <h2>
+            <span>Tambah Tutorial Baru</span>
+            <div class="tooltip">
+              <span>ℹ️</span>
+              <span class="tooltip-text"
+                >Tambahkan tutorial baru yang dapat diakses melalui Telegram
+                bot</span
+              >
+            </div>
+          </h2>
+          <form id="formTambahTutorial">
+            <div class="form-group">
+              <label for="title">Judul Tutorial</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Masukkan judul tutorial"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="text_content">Konten Tutorial</label>
+              <textarea
+                id="text_content"
+                name="text_content"
+                placeholder="Masukkan konten tutorial (teks, instruksi, langkah-langkah, dll)"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="image_file_id">
+                File ID Gambar
+                <div class="tooltip">
+                  <span>ℹ️</span>
+                  <span class="tooltip-text"
+                    >Upload gambar ke bot Telegram, dan salin File ID yang
+                    diberikan oleh bot</span
+                  >
+                </div>
+              </label>
+              <input
+                type="text"
+                id="image_file_id"
+                name="image_file_id"
+                placeholder="Masukkan File ID gambar (opsional)"
+              />
+            </div>
+
+            <div class="tutorial-preview">
+              <h4>Preview Command</h4>
+              <div class="preview-content" id="commandPreview">
+                tutorial_judul_tutorial
+              </div>
+            </div>
+
+            <button type="submit" class="success">
+              <span>Tambah Tutorial</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Tutorial List Section -->
+        <div class="section">
+          <h2>
+            <span>Daftar Tutorial</span>
+            <div class="search-box">
+              <input
+                type="text"
+                id="searchTutorial"
+                placeholder="Cari tutorial..."
+              />
+            </div>
+          </h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Judul</th>
+                <th>Command</th>
+                <th>Gambar</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tutorialList">
+              {% for tutorial in tutorials %}
+              <tr>
+                <td>{{ tutorial.title }}</td>
+                <td><code>{{ tutorial.command }}</code></td>
+                <td>{{ "Ada" if tutorial.image_file_id else "Tidak ada" }}</td>
+                <td class="action-buttons">
+                  <button onclick="viewTutorial('{{ tutorial._id }}')">
+                    Lihat
+                  </button>
+                  <button
+                    class="warning"
+                    onclick="editTutorial('{{ tutorial._id }}')"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="danger"
+                    onclick="hapusTutorial('{{ tutorial._id }}')"
+                  >
+                    Hapus
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- Modal Overlay -->
-    <div class="modal-overlay" id="modalOverlay">
+    <!-- Alert Modal -->
+    <div class="modal-overlay alert-modal" id="alertModal">
       <div class="modal">
         <div class="modal-icon" id="modalIcon">
           <span id="modalIconSymbol">✓</span>
         </div>
         <div class="modal-title" id="modalTitle"></div>
         <div class="modal-message" id="modalMessage"></div>
-        <button onclick="closeModal()">OK</button>
+        <button onclick="closeModal('alertModal')">OK</button>
       </div>
     </div>
 
     <!-- Edit User Modal -->
-    <div class="modal-overlay" id="editModal">
+    <div class="modal-overlay" id="editUserModal">
       <div class="modal">
-        <h2>Edit Pengguna</h2>
+        <div class="modal-header">
+          <h2>Edit Pengguna</h2>
+          <button class="modal-close" onclick="closeModal('editUserModal')">
+            &times;
+          </button>
+        </div>
         <form id="formEditPengguna">
           <input type="hidden" id="editUserId" name="user_id" />
-          <input
-            type="text"
-            id="editUsername"
-            name="username"
-            placeholder="Username"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password (kosongkan jika tidak ingin mengubah)"
-          />
-          <div>
+          <div class="form-group">
+            <label for="editUsername">Username</label>
+            <input
+              type="text"
+              id="editUsername"
+              name="username"
+              placeholder="Username"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editPassword">Password</label>
+            <input
+              type="password"
+              id="editPassword"
+              name="password"
+              placeholder="Password (kosongkan jika tidak ingin mengubah)"
+            />
+          </div>
+          <div class="checkbox-group">
             <input type="checkbox" name="is_admin" id="editAdminCheckbox" />
             <label for="editAdminCheckbox">Admin</label>
           </div>
-          <button type="submit">Perbarui Pengguna</button>
+          <button type="submit" class="warning">Perbarui Pengguna</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- View Tutorial Modal -->
+    <div class="modal-overlay" id="viewTutorialModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 id="viewTutorialTitle">Detail Tutorial</h2>
+          <button class="modal-close" onclick="closeModal('viewTutorialModal')">
+            &times;
+          </button>
+        </div>
+        <div>
+          <h4>Command:</h4>
+          <code id="viewTutorialCommand"></code>
+
+          <h4 style="margin-top: 15px">Konten:</h4>
+          <div
+            id="viewTutorialContent"
+            style="
+              white-space: pre-wrap;
+              background: #f5f5f5;
+              padding: 10px;
+              border-radius: 5px;
+              margin: 10px 0;
+            "
+          ></div>
+
+          <div id="viewTutorialImageContainer" style="margin-top: 15px">
+            <h4>File ID Gambar:</h4>
+            <code id="viewTutorialImage"></code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Tutorial Modal -->
+    <div class="modal-overlay" id="editTutorialModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Edit Tutorial</h2>
+          <button class="modal-close" onclick="closeModal('editTutorialModal')">
+            &times;
+          </button>
+        </div>
+        <form id="formEditTutorial">
+          <input type="hidden" id="editTutorialId" name="tutorial_id" />
+          <div class="form-group">
+            <label for="editTutorialTitle">Judul Tutorial</label>
+            <input
+              type="text"
+              id="editTutorialTitle"
+              name="title"
+              placeholder="Judul tutorial"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="editTutorialContent">Konten Tutorial</label>
+            <textarea
+              id="editTutorialContent"
+              name="text_content"
+              placeholder="Konten tutorial"
+              rows="8"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editTutorialImage">File ID Gambar</label>
+            <input
+              type="text"
+              id="editTutorialImage"
+              name="image_file_id"
+              placeholder="File ID gambar (opsional)"
+            />
+          </div>
+          <div class="tutorial-preview">
+            <h4>Preview Command</h4>
+            <div class="preview-content" id="editCommandPreview">
+              tutorial_judul_tutorial
+            </div>
+          </div>
+          <button type="submit" class="warning">Perbarui Tutorial</button>
         </form>
       </div>
     </div>
 
     <script>
-      function showModal(type, title, message) {
-        const modalOverlay = document.getElementById("modalOverlay");
+      // Tab Navigation
+      document.querySelectorAll(".tab-item").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          // Remove active class from all tabs
+          document
+            .querySelectorAll(".tab-item")
+            .forEach((t) => t.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-content")
+            .forEach((c) => c.classList.remove("active"));
+
+          // Add active class to clicked tab
+          tab.classList.add("active");
+          document
+            .getElementById(tab.dataset.tab + "Tab")
+            .classList.add("active");
+        });
+      });
+
+      // Sidebar Navigation
+      document.getElementById("navUsers").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector('.tab-item[data-tab="users"]').click();
+      });
+
+      document.getElementById("navTutorials").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector('.tab-item[data-tab="tutorials"]').click();
+      });
+
+      // Tutorial Command Preview Generator
+      function createCommandFromTitle(title) {
+        return title
+          ? `tutorial_${title.toLowerCase().replace(/\s+/g, "_")}`
+          : "tutorial_judul_tutorial";
+      }
+
+      document.getElementById("title").addEventListener("input", function (e) {
+        const title = e.target.value.trim();
+        document.getElementById("commandPreview").textContent =
+          createCommandFromTitle(title);
+      });
+
+      document
+        .getElementById("editTutorialTitle")
+        .addEventListener("input", function (e) {
+          const title = e.target.value.trim();
+          document.getElementById("editCommandPreview").textContent =
+            createCommandFromTitle(title);
+        });
+
+      // Modal Functions
+      function showModal(id) {
+        document.getElementById(id).style.display = "flex";
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+      }
+
+      function showAlertModal(type, title, message) {
         const modalIcon = document.getElementById("modalIcon");
         const modalIconSymbol = document.getElementById("modalIconSymbol");
         const modalTitle = document.getElementById("modalTitle");
@@ -430,92 +976,57 @@
         modalIconSymbol.textContent = type === "success" ? "✓" : "✕";
         modalTitle.textContent = title;
         modalMessage.textContent = message;
-        modalOverlay.style.display = "flex";
+        showModal("alertModal");
       }
 
-      function closeModal() {
-        document.getElementById("modalOverlay").style.display = "none";
-        document.getElementById("editModal").style.display = "none";
-      }
-
-      function editUser(userId) {
-        const userRow = document
-          .querySelector(`tr button[onclick="editUser('${userId}')"]`)
-          .closest("tr");
-        const username = userRow.querySelector("td:first-child").textContent;
-        const isAdmin =
-          userRow.querySelector("td:nth-child(2)").textContent === "Admin";
-
-        document.getElementById("editUserId").value = userId;
-        document.getElementById("editUsername").value = username;
-        document.getElementById("editAdminCheckbox").checked = isAdmin;
-        document.getElementById("editModal").style.display = "flex";
-      }
-
-      function hapusUser(userId) {
-        if (confirm("Yakin ingin menghapus pengguna secara permanen?")) {
-          axios.post(`/admin/hapus_pengguna/${userId}`).then((response) => {
-            if (response.data.berhasil) {
-              showModal("success", "Berhasil", "Pengguna berhasil dihapus");
-              setTimeout(() => {
-                location.reload();
-              }, 1500);
-            } else {
-              showModal("error", "Error", response.data.pesan);
-            }
-          });
-        }
-      }
-
-      // Search functionality
-      document
-        .getElementById("searchUser")
-        .addEventListener("input", function (e) {
-          const searchTerm = e.target.value.toLowerCase();
-          const rows = document.querySelectorAll("#userList tr");
-
-          rows.forEach((row) => {
-            const username = row
-              .querySelector("td:first-child")
-              .textContent.toLowerCase();
-            if (username.includes(searchTerm)) {
-              row.style.display = "";
-            } else {
-              row.style.display = "none";
-            }
-          });
-        });
-
+      // User Management Functions
+      // Add User Form Submission
       document
         .getElementById("formTambahPengguna")
         .addEventListener("submit", function (e) {
           e.preventDefault();
           const formData = new FormData(e.target);
 
-          axios.post("/admin/tambah_pengguna", formData).then((response) => {
-            if (response.data.berhasil) {
-              showModal("success", "Berhasil", "Pengguna berhasil ditambahkan");
-              setTimeout(() => {
-                location.reload();
-              }, 1500);
-            } else {
-              showModal("error", "Error", response.data.pesan);
-            }
-          });
+          axios
+            .post("/admin/tambah_pengguna", formData)
+            .then((response) => {
+              if (response.data.berhasil) {
+                showAlertModal(
+                  "success",
+                  "Berhasil",
+                  "Pengguna berhasil ditambahkan"
+                );
+                e.target.reset();
+                setTimeout(() => {
+                  location.reload();
+                }, 1500);
+              } else {
+                showAlertModal("error", "Error", response.data.pesan);
+              }
+            })
+            .catch((error) => {
+              showAlertModal(
+                "error",
+                "Error",
+                "Terjadi kesalahan saat menambahkan pengguna"
+              );
+              console.error(error);
+            });
         });
 
+      // Edit User Form
       document
         .getElementById("formEditPengguna")
         .addEventListener("submit", function (e) {
           e.preventDefault();
+          const userId = document.getElementById("editUserId").value;
           const formData = new FormData(e.target);
-          const userId = formData.get("user_id");
 
           axios
             .post(`/admin/perbarui_pengguna/${userId}`, formData)
             .then((response) => {
               if (response.data.berhasil) {
-                showModal(
+                showAlertModal(
                   "success",
                   "Berhasil",
                   "Pengguna berhasil diperbarui"
@@ -524,10 +1035,386 @@
                   location.reload();
                 }, 1500);
               } else {
-                showModal("error", "Error", response.data.pesan);
+                showAlertModal("error", "Error", response.data.pesan);
               }
+            })
+            .catch((error) => {
+              showAlertModal(
+                "error",
+                "Error",
+                "Terjadi kesalahan saat memperbarui pengguna"
+              );
+              console.error(error);
             });
         });
+
+      function editUser(userId) {
+        axios
+          .get(`/admin/pengguna/${userId}`)
+          .then((response) => {
+            if (response && response.data && response.data.user) {
+              const user = response.data.user;
+              document.getElementById("editUserId").value = userId;
+              document.getElementById("editUsername").value = user.username;
+              document.getElementById("editPassword").value = ""; // Clear password field
+              document.getElementById("editAdminCheckbox").checked =
+                user.is_admin;
+              showModal("editUserModal");
+            } else {
+              // Fallback to getting user data from the table
+              const userRow = document
+                .querySelector(`tr button[onclick="editUser('${userId}')"]`)
+                .closest("tr");
+              const username =
+                userRow.querySelector("td:first-child").textContent;
+              const isAdmin =
+                userRow.querySelector(".badge").textContent.trim() === "Admin";
+
+              document.getElementById("editUserId").value = userId;
+              document.getElementById("editUsername").value = username;
+              document.getElementById("editPassword").value = ""; // Clear password field
+              document.getElementById("editAdminCheckbox").checked = isAdmin;
+              showModal("editUserModal");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+
+            // Fallback to getting user data from the table
+            const userRow = document
+              .querySelector(`tr button[onclick="editUser('${userId}')"]`)
+              .closest("tr");
+            const username =
+              userRow.querySelector("td:first-child").textContent;
+            const isAdmin =
+              userRow.querySelector(".badge").textContent.trim() === "Admin";
+
+            document.getElementById("editUserId").value = userId;
+            document.getElementById("editUsername").value = username;
+            document.getElementById("editPassword").value = ""; // Clear password field
+            document.getElementById("editAdminCheckbox").checked = isAdmin;
+            showModal("editUserModal");
+          });
+      }
+
+      function hapusUser(userId) {
+        if (confirm("Yakin ingin menghapus pengguna secara permanen?")) {
+          axios
+            .post(`/admin/hapus_pengguna/${userId}`)
+            .then((response) => {
+              if (response.data.berhasil) {
+                showAlertModal(
+                  "success",
+                  "Berhasil",
+                  "Pengguna berhasil dihapus"
+                );
+                setTimeout(() => {
+                  location.reload();
+                }, 1500);
+              } else {
+                showAlertModal("error", "Error", response.data.pesan);
+              }
+            })
+            .catch((error) => {
+              showAlertModal(
+                "error",
+                "Error",
+                "Terjadi kesalahan saat menghapus pengguna"
+              );
+              console.error(error);
+            });
+        }
+      }
+
+      // Tutorial Management Functions
+      let tutorialsData = {};
+
+      function loadTutorials() {
+        axios
+          .get("/api/tutorials")
+          .then((response) => {
+            if (response.data.berhasil) {
+              tutorialsData = {};
+              response.data.tutorials.forEach((tutorial) => {
+                tutorialsData[tutorial.id] = tutorial;
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error loading tutorials:", error);
+          });
+      }
+
+      // Load tutorials when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        loadTutorials();
+
+        // Filter users
+        document
+          .getElementById("searchUser")
+          .addEventListener("input", function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll("#userList tr");
+
+            rows.forEach((row) => {
+              const username = row
+                .querySelector("td:first-child")
+                .textContent.toLowerCase();
+              if (username.includes(searchTerm)) {
+                row.style.display = "";
+              } else {
+                row.style.display = "none";
+              }
+            });
+          });
+
+        // Filter tutorials
+        document
+          .getElementById("searchTutorial")
+          .addEventListener("input", function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll("#tutorialList tr");
+
+            rows.forEach((row) => {
+              const title = row
+                .querySelector("td:first-child")
+                .textContent.toLowerCase();
+              const command = row
+                .querySelector("td:nth-child(2)")
+                .textContent.toLowerCase();
+              if (title.includes(searchTerm) || command.includes(searchTerm)) {
+                row.style.display = "";
+              } else {
+                row.style.display = "none";
+              }
+            });
+          });
+      });
+
+      // Add Tutorial Form Submission
+      document
+        .getElementById("formTambahTutorial")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+
+          axios
+            .post("/admin/tambah_tutorial", formData)
+            .then((response) => {
+              if (response.data.berhasil) {
+                showAlertModal(
+                  "success",
+                  "Berhasil",
+                  "Tutorial berhasil ditambahkan"
+                );
+                e.target.reset();
+                document.getElementById("commandPreview").textContent =
+                  "tutorial_judul_tutorial";
+                setTimeout(() => {
+                  location.reload();
+                }, 1500);
+              } else {
+                showAlertModal("error", "Error", response.data.pesan);
+              }
+            })
+            .catch((error) => {
+              showAlertModal(
+                "error",
+                "Error",
+                "Terjadi kesalahan saat menambahkan tutorial"
+              );
+              console.error(error);
+            });
+        });
+
+      function viewTutorial(tutorialId) {
+        if (!tutorialsData[tutorialId]) {
+          loadTutorials();
+          setTimeout(() => viewTutorialWithData(tutorialId), 500);
+          return;
+        }
+
+        viewTutorialWithData(tutorialId);
+      }
+
+      function viewTutorialWithData(tutorialId) {
+        const tutorialCommand = tutorialsData[tutorialId]?.command;
+
+        if (!tutorialCommand) {
+          showAlertModal("error", "Error", "Data tutorial tidak ditemukan");
+          return;
+        }
+
+        axios
+          .get(`/api/tutorials/${tutorialCommand}`)
+          .then((response) => {
+            if (response.data.berhasil) {
+              const tutorial = response.data.tutorial;
+              document.getElementById("viewTutorialTitle").textContent =
+                tutorial.title;
+              document.getElementById("viewTutorialCommand").textContent =
+                tutorialCommand;
+              document.getElementById("viewTutorialContent").textContent =
+                tutorial.text_content;
+
+              if (tutorial.image_file_id) {
+                document.getElementById(
+                  "viewTutorialImageContainer"
+                ).style.display = "block";
+                document.getElementById("viewTutorialImage").textContent =
+                  tutorial.image_file_id;
+              } else {
+                document.getElementById(
+                  "viewTutorialImageContainer"
+                ).style.display = "none";
+              }
+
+              showModal("viewTutorialModal");
+            } else {
+              showAlertModal("error", "Error", "Gagal memuat detail tutorial.");
+            }
+          })
+          .catch((error) => {
+            showAlertModal(
+              "error",
+              "Error",
+              "Terjadi kesalahan saat memuat tutorial"
+            );
+            console.error(error);
+          });
+      }
+
+      function editTutorial(tutorialId) {
+        if (!tutorialsData[tutorialId]) {
+          loadTutorials();
+          setTimeout(() => editTutorialWithData(tutorialId), 500);
+          return;
+        }
+
+        editTutorialWithData(tutorialId);
+      }
+
+      function editTutorialWithData(tutorialId) {
+        const tutorialCommand = tutorialsData[tutorialId]?.command;
+
+        if (!tutorialCommand) {
+          showAlertModal("error", "Error", "Data tutorial tidak ditemukan");
+          return;
+        }
+
+        axios
+          .get(`/api/tutorials/${tutorialCommand}`)
+          .then((response) => {
+            if (response.data.berhasil) {
+              const tutorial = response.data.tutorial;
+              document.getElementById("editTutorialId").value = tutorialId;
+              document.getElementById("editTutorialTitle").value =
+                tutorial.title;
+              document.getElementById("editTutorialContent").value =
+                tutorial.text_content;
+              document.getElementById("editTutorialImage").value =
+                tutorial.image_file_id || "";
+              document.getElementById("editCommandPreview").textContent =
+                tutorialCommand;
+
+              showModal("editTutorialModal");
+            } else {
+              showAlertModal(
+                "error",
+                "Error",
+                "Gagal memuat detail tutorial untuk pengeditan."
+              );
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching tutorial for edit:", error);
+
+            // Fallback to using cached data
+            if (tutorialsData[tutorialId]) {
+              const tutorial = tutorialsData[tutorialId];
+              document.getElementById("editTutorialId").value = tutorialId;
+              document.getElementById("editTutorialTitle").value =
+                tutorial.title;
+              document.getElementById("editTutorialContent").value =
+                tutorial.text_content || "";
+              document.getElementById("editTutorialImage").value =
+                tutorial.image_file_id || "";
+              document.getElementById("editCommandPreview").textContent =
+                tutorial.command;
+
+              showModal("editTutorialModal");
+            } else {
+              showAlertModal(
+                "error",
+                "Error",
+                "Gagal memuat detail tutorial untuk pengeditan"
+              );
+            }
+          });
+      }
+
+      document
+        .getElementById("formEditTutorial")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const tutorialId = document.getElementById("editTutorialId").value;
+          const formData = new FormData(e.target);
+
+          axios
+            .post(`/admin/perbarui_tutorial/${tutorialId}`, formData)
+            .then((response) => {
+              if (response.data.berhasil) {
+                showAlertModal(
+                  "success",
+                  "Berhasil",
+                  "Tutorial berhasil diperbarui."
+                );
+                loadTutorials(); // Refresh the tutorials data
+                setTimeout(() => {
+                  location.reload();
+                }, 1500);
+              } else {
+                showAlertModal("error", "Error", response.data.pesan);
+              }
+            })
+            .catch((error) => {
+              showAlertModal(
+                "error",
+                "Error",
+                "Terjadi kesalahan saat memperbarui tutorial"
+              );
+              console.error(error);
+            });
+        });
+
+      function hapusTutorial(tutorialId) {
+        if (confirm("Yakin ingin menghapus tutorial ini?")) {
+          axios
+            .post(`/admin/hapus_tutorial/${tutorialId}`)
+            .then((response) => {
+              if (response.data.berhasil) {
+                showAlertModal(
+                  "success",
+                  "Berhasil",
+                  "Tutorial berhasil dihapus."
+                );
+                setTimeout(() => {
+                  location.reload();
+                }, 1500);
+              } else {
+                showAlertModal("error", "Error", response.data.pesan);
+              }
+            })
+            .catch((error) => {
+              showAlertModal(
+                "error",
+                "Error",
+                "Terjadi kesalahan saat menghapus tutorial"
+              );
+              console.error(error);
+            });
+        }
+      }
     </script>
   </body>
 </html>

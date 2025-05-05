@@ -708,7 +708,7 @@
             <div class="tutorial-preview">
               <h4>Preview Command</h4>
               <div class="preview-content" id="commandPreview">
-                tutorial_judul_tutorial
+                judul_tutorial
               </div>
             </div>
 
@@ -897,7 +897,7 @@
           <div class="tutorial-preview">
             <h4>Preview Command</h4>
             <div class="preview-content" id="editCommandPreview">
-              tutorial_judul_tutorial
+              judul_tutorial
             </div>
           </div>
           <button type="submit" class="warning">Perbarui Tutorial</button>
@@ -939,8 +939,8 @@
       // Tutorial Command Preview Generator
       function createCommandFromTitle(title) {
         return title
-          ? `tutorial_${title.toLowerCase().replace(/\s+/g, "_")}`
-          : "tutorial_judul_tutorial";
+          ? `${title.toLowerCase().replace(/\s+/g, "_")}`
+          : "judul_tutorial";
       }
 
       document.getElementById("title").addEventListener("input", function (e) {
@@ -1209,7 +1209,7 @@
                 );
                 e.target.reset();
                 document.getElementById("commandPreview").textContent =
-                  "tutorial_judul_tutorial";
+                  "judul_tutorial";
                 setTimeout(() => {
                   location.reload();
                 }, 1500);

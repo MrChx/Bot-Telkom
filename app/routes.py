@@ -80,7 +80,8 @@ def admin_login():
 def admin_dashboard():
     users = db.dapatkan_semua_pengguna()
     statistik = db.dapatkan_statistik_pengguna()
-    return render_template('admin_dashboard.html', users=users, statistik=statistik)
+    tutorials = db.dapatkan_semua_tutorial()
+    return render_template('admin_dashboard.html', users=users, statistik=statistik, tutorials=tutorials)
 
 @app.route('/admin/tambah_pengguna', methods=['POST'])
 @admin_required
@@ -125,29 +126,21 @@ def hapus_pengguna(user_id):
     })
 
 # tutorial
-@app.route('/admin/tutorials')
-@admin_required
-def admin_tutorials():
-    tutorials = db.dapatkan_semua_tutorial()
-    return render_template('admin_tutorials.html', tutorials=tutorials)
+# @app.route('/admin/tutorials')
+# @admin_required
+# def admin_tutorials():
+#     tutorials = db.dapatkan_semua_tutorial()
+#     return render_template('admin_tutorials.html', tutorials=tutorials)
 
 @app.route('/admin/tambah_tutorial', methods=['POST'])
 @admin_required
 def tambah_tutorial():
     title = request.form['title']
     text_content = request.form['text_content']
+    image_file_id = request.form.get('image_file_id', None)
     
-    image_path = None
-    if 'image' in request.files:
-        file = request.files['image']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            save_path = os.path.join('uploads', filename)
-            file.save(os.path.join(app.static_folder, save_path))
-            image_path = save_path
-    
-    success = db.tambah_tutorial(title, text_content, image_path)
-    return jsonify({'berhasil': success, 'pesan': 'Tutorial berhasil ditambahkan'})
+    success = db.tambah_tutorial(title, text_content, image_file_id)
+    return jsonify({'berhasil': bool(success), 'pesan': 'Tutorial berhasil ditambahkan'})
 
 @app.route('/admin/perbarui_tutorial/<tutorial_id>', methods=['POST'])
 @admin_required
